@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}My Items List{% endblock %}
+
+{% block content %}
+
+<ul class="item-list">
+  {% for item in items %}
+    <li class="item-card">
+      <h3>{{ item.name }} — ₹{{ item.price }}</h3>
+      <p>{{ item.description }}</p>
+
+      <div class="item-meta">
+        Added: {{ item.created_at|date:"M d, Y, P" }}
+      </div>
+
+      <div class="item-actions">
+        <a href="{% url 'edit_item' item.pk %}">Edit</a>
+        <a href="{% url 'delete_item' item.pk %}" class="delete">Delete</a>
+      </div>
+    </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
