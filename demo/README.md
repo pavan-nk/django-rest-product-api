@@ -1,97 +1,79 @@
-# Django REST Product API
+# Django REST Product API (JWT Authentication)
 
-A backend REST API built using Django and Django REST Framework with JWT authentication.
-This project demonstrates secure APIs, authentication, and clean backend structure.
-
----
-
-## 🚀 Features
-- JWT Authentication (Access & Refresh tokens)
-- Secure API endpoints
-- Product CRUD operations
-- Django Admin panel
-- Clean, internship-ready backend project
+This is a backend-only REST API built with Django and Django REST Framework.
+The project is deployed live on Render.
 
 ---
 
-## 🛠 Tech Stack
+## Live Base URL
+
+https://django-rest-product-api.onrender.com
+
+Note: This is an API backend. Opening the root URL (/) will return 404.
+
+---
+
+## Tech Stack
+
 - Python
 - Django
 - Django REST Framework
-- Simple JWT
-- SQLite (development database)
+- JWT Authentication (SimpleJWT)
+- Gunicorn
+- Render (Deployment)
 
 ---
 
-## 📂 Project Structure
-demo/
-│
-├── demo/
-│ ├── settings.py
-│ ├── urls.py
-│ ├── asgi.py
-│ ├── wsgi.py
-│
-├── myapp/
-│ ├── migrations/
-│ ├── admin.py
-│ ├── api_views.py
-│ ├── models.py
-│ ├── serializers.py
-│ ├── urls.py
-│ ├── views.py
-│
-├── manage.py
-├── db.sqlite3
-├── README.md
+## Authentication (JWT)
 
+### Step 1: Get Token
 
----
-
-## ⚙️ Setup Instructions
-
-### 1️⃣ Create virtual environment
-```bash
-python -m venv venv
-
-2️⃣ Activate virtual environment (Windows)
-venv\Scripts\activate
-
-3️⃣ Install dependencies
-pip install django djangorestframework djangorestframework-simplejwt
-
-4️⃣ Run migrations
-python manage.py migrate
-
-5️⃣ Create superuser
-python manage.py createsuperuser
-
-6️⃣ Run server
-python manage.py runserver
-
-🔐 Authentication (JWT)
-Get token
 POST /api/token/
 
-
-Request body:
-
+Request Body:
 {
   "username": "your_username",
   "password": "your_password"
 }
 
-Use token in requests
+Response:
+{
+  "access": "JWT_ACCESS_TOKEN",
+  "refresh": "JWT_REFRESH_TOKEN"
+}
 
-Add header:
+---
 
-Authorization: Bearer <access_token>
+### Step 2: Access Protected APIs
 
-📡 API Endpoints
-Method	Endpoint	Description
-POST	/api/token/	Get JWT token
-POST	/api/token/refresh/	Refresh token
-GET	/api/products/	List products
-POST	/api/products/	Create product
-PUT	/api/products/{id}/	Update product
-DELETE	/api/products/{id}/	Delete product
+GET /api/products/
+
+Headers:
+Authorization: Bearer JWT_ACCESS_TOKEN
+
+If token is missing, API returns:
+Authentication credentials were not provided
+
+---
+
+## Features
+
+- Secure JWT authentication
+- Protected REST endpoints
+- CRUD operations for products
+- Production deployment with Gunicorn
+- Environment-based configuration
+
+---
+
+## Deployment
+
+The application is deployed on Render using:
+
+gunicorn demo.wsgi:application
+
+---
+
+## Status
+
+Live and working
